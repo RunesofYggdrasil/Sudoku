@@ -133,3 +133,4 @@ board3 = get_board(3)
 s1 = Sudoku(board1["title"], board1["author"], board1["board"])
 s2 = Sudoku(board2["title"], board2["author"], board2["board"])
 s3 = Sudoku(board3["title"], board3["author"], board3["board"])
+# Test
