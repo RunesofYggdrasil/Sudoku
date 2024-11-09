@@ -1,55 +1,29 @@
-from sudoku import Sudoku
+import random
 
-def get_board(n):
-    """ Reads sudokuboards.txt and gets the board via the board number n. """
-    file = open("sudokuboards.txt", "r")
-    board_n = "Board #" + str(n)
+def load_board(filename="sudokuboards.txt"):
+    """Loads a random Sudoku board from the file containing multiple boards."""
+    with open(filename, "r") as f:
+        lines = f.readlines()
 
-    index = 0
-    lines = file.readlines()
+    # Split the lines into individual boards
+    boards = []
+    current_board = []
+
     for line in lines:
-        if board_n in line:
-            break
+        if line.strip() == "":
+            if current_board:
+                boards.append(current_board)
+                current_board = []
+        elif "|" in line or "-" in line:
+            continue
         else:
-            index += 1
-    
-    board = lines[index:index + 12]
-    file.close()
+            row = [int(x) if x.isdigit() else 0 for x in line.split()]
+            current_board.append(row)
 
-    name = board[0].strip().split(" by ")
-    board_list = []
-    for row in board[1:]:
-        split_row = row.split()
-        board_row = []
-        for col in split_row:
-            if col.isnumeric():
-                board_row.append(int(col))
-        if len(board_row) > 0:
-            board_list.append(board_row)
+    if current_board:
+        boards.append(current_board)
 
-    dict = {"title": name[0], "author": name[1], "board": board_list}
-    return dict
-
-board1 = get_board(1)
-board2 = get_board(2)
-board3 = get_board(3)
-s1 = Sudoku(board1["title"], board1["author"], board1["board"])
-s2 = Sudoku(board2["title"], board2["author"], board2["board"])
-s3 = Sudoku(board3["title"], board3["author"], board3["board"])
-
-print(s3)
-s3.set_index(1, 2, 3)
-print(s3)
-s3.set_index(2, 4, 5)
-print(s3)
-s3.set_index(4, 6, 2)
-print(s3)
-s3.undo()
-print(s3)
-s3.undo()
-print(s3)
-s3.redo()
-print(s3)
-s3.set_index(3, 4, 1)
-print(s3)
-print(s3.changes)
+    # Choose a random board from the list of boards
+    chosen_board = random.choice(boards)
+    print("A new Sudoku board has been loaded!")
+    return chosen_board
