@@ -95,3 +95,13 @@ class Sudoku:
         row = (n // 3) * 3
         col = (n % 3) * 3
         return self.board[row][col:col + 3] + self.board[row + 1][col:col + 3] + self.board[row + 2][col:col + 3]
+    
+    def get_index(self, row, col):
+        """ Returns the value at the row and column of the Sudoku board. """
+        return self.board[row][col]
+    
+    def set_index(self, row, col, value):
+        """ Sets the value at the row and column of the Sudoku board. """
+        self.board[row][col] = value
+
+    
