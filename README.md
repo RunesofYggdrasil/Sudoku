@@ -2,15 +2,6 @@
 
 This is a Python-based implementation of a Sudoku puzzle game that allows users to load different Sudoku boards from a file, interact with the puzzle, set values, and track changes using undo and redo functionality.
 
-## Table of Contents
-1. [Project Description](#project-description)
-2. [Features](#features)
-3. [Installation](#installation)
-4. [Usage](#usage)
-5. [Code Structure](#code-structure)
-6. [Contributors](#contributors)
-7. [License](#license)
-
 ## Project Description
 
 This project is a console-based Sudoku game in Python that:
