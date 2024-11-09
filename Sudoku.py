@@ -81,6 +81,21 @@ class Sudoku:
     def get_board(self):
         """ Returns the board of the Sudoku board. """
         return self.board
+    
+    def get_row(self, n):
+        """ Returns row n of the Sudoku board. """
+        return self.board[n]
+
+    def get_col(self, n):
+        """ Returns col n of the Sudoku board. """
+        return [row[n] for row in self.board]
+    
+    def get_square(self, n):
+        """ Returns square n of the Sudoku board. """
+        row = (n // 3) * 3
+        col = (n % 3) * 3
+        return self.board[row][col:col + 3] + self.board[row + 1][col:col + 3] + self.board[row + 2][col:col + 3]
+
 
 def get_board(n):
     """ Reads sudokuboards.txt and gets the board via the board number n. """
@@ -116,11 +131,3 @@ board1 = get_board(1)
 board2 = get_board(2)
 board3 = get_board(3)
 s1 = Sudoku(board1["title"], board1["author"], board1["board"])
-s2 = Sudoku(board1["title"], board1["author"], board1["board"])
-s3 = Sudoku(board2["title"], board2["author"], board2["board"])
-print("s1 == s2", s1 == s2)
-print("s1 == s3", s1 == s3)
-print("s2 == s3", s2 == s3)
-print(s1)
-
-#test for pull
