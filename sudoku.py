@@ -23,6 +23,8 @@ class Sudoku:
         self.title = init_title
         self.author = init_author
         self.board = init_board
+        self.changes = []
+        self.change_index = 0
     
     def __eq__(self, other):
         """ Returns True if the title, author, and entire board are equal, and False otherwise. """
@@ -102,6 +104,19 @@ class Sudoku:
     
     def set_index(self, row, col, value):
         """ Sets the value at the row and column of the Sudoku board. """
+        self.change_index += 1
+        self.changes = self.changes[:self.change_index]
+        self.changes.append({"index": [row, col], "before": self.board[row][col], "after": value})
         self.board[row][col] = value
 
+    def undo(self):
+        """ Undoes the previous move. """
+        self.change_index -= 1
+        change = self.changes[self.change_index]
+        self.board[change["index"][0]][change["index"][1]] = change["before"]
     
+    def redo(self):
+        """ Redoes the previous move. """
+        self.change_index += 1
+        change = self.changes[self.change_index]
+        self.board[change["index"][0]][change["index"][1]] = change["after"]
