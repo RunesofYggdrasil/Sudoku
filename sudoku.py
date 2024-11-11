@@ -72,6 +72,17 @@ class Sudoku:
         sudoku_str += "\n" + board_str.strip()
         return sudoku_str
     
+    def print_board(self):
+        """ Prints the board to the console for visualization. """
+        print("    1 2 3   4 5 6   7 8 9")
+        print("  -------------------------")
+        for i, row in enumerate(self.board):
+            row_label = chr(ord('A') + i)
+            row_str = " ".join(str(num) if num != 0 else "." for num in row)
+            print(f"{row_label} | {row_str[:5]} | {row_str[6:11]} | {row_str[12:]}")
+            if (i + 1) % 3 == 0 and i != 8:
+                print("  -------------------------")
+
     def get_title(self):
         """ Returns the title of the Sudoku board. """
         return self.title
@@ -120,5 +131,46 @@ class Sudoku:
         self.change_index += 1
         change = self.changes[self.change_index]
         self.board[change["index"][0]][change["index"][1]] = change["after"]
+        
+    def is_valid_move(self, row, col, value):
+        """ Checks if a move is valid. """
+        square = row // 3 + col % 3
+        if (row >= 0 and row < 9) and (col >= 0 and col < 9) and (square >= 0 and square < 9) and (value > 0 and value <= 9):
+            if value in self.get_row(row) or value in self.get_col(col) or value in self.get_square(square):
+                return False
+            else: 
+                return True
+        else: 
+            return False
 
-# Change
+    def is_complete(self):
+        """ Checks if the board is complete. """
+        return all(0 not in row for row in self.board)
+     
+    def move(self, row, col, value):
+        """ Checks if the move is valid and then makes the move. """
+        if self.is_valid_move(row, col, value):
+            self.set_index(row, col, value)
+            print(f"{value} placed at {chr(row + 65)}{col + 1}")
+        else: 
+            print("Invalid Move.")
+
+    def play(self):
+        """ Loops game until board is complete. """
+        print("Enter your moves in 'A1 5' format (row A, column 1, number 5). Type 'exit' to quit.")
+        while not self.is_complete():
+            self.print_board()
+            move = input("Enter Move: ")
+            if move.lower() == "exit":
+                print("Game Saved and Exited.")
+                break
+            try:
+                pos, value = move.split()
+                row = ord(pos[0].upper()) - ord('A')
+                col = int(pos[1]) - 1
+                value = int(value)
+                self.move(row, col, value)
+            except (ValueError, IndexError):
+                print("Invalid format. Use 'A1 5'.")
+        if self.is_complete():
+            print("Congratulations! Game Complete.")
