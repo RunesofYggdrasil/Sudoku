@@ -131,7 +131,7 @@ class Sudoku:
         self.change_index += 1
         change = self.changes[self.change_index]
         self.board[change["index"][0]][change["index"][1]] = change["after"]
-
+        
     def is_valid_move(self, row, col, value):
         """ Checks if a move is valid. """
         square = row // 3 + col % 3
