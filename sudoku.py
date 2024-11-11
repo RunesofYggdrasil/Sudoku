@@ -120,3 +120,5 @@ class Sudoku:
         self.change_index += 1
         change = self.changes[self.change_index]
         self.board[change["index"][0]][change["index"][1]] = change["after"]
+
+# Change
