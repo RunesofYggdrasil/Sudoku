@@ -122,16 +122,18 @@ class Sudoku:
 
     def undo(self):
         """ Undoes the previous move. """
-        self.change_index -= 1
-        change = self.changes[self.change_index]
-        self.board[change["index"][0]][change["index"][1]] = change["before"]
+        if self.change_index - 1 >= 0:
+            self.change_index -= 1
+            change = self.changes[self.change_index]
+            self.board[change["index"][0]][change["index"][1]] = change["before"]
     
     def redo(self):
         """ Redoes the previous move. """
-        self.change_index += 1
-        change = self.changes[self.change_index]
-        self.board[change["index"][0]][change["index"][1]] = change["after"]
-        
+        if self.change_index + 1 < len(self.changes):
+            self.change_index += 1
+            change = self.changes[self.change_index]
+            self.board[change["index"][0]][change["index"][1]] = change["after"]
+
     def is_valid_move(self, row, col, value):
         """ Checks if a move is valid. """
         square = row // 3 + col % 3
@@ -162,15 +164,22 @@ class Sudoku:
             self.print_board()
             move = input("Enter Move: ")
             if move.lower() == "exit":
-                print("Game Saved and Exited.")
+                print("Game Exited.")
                 break
-            try:
-                pos, value = move.split()
-                row = ord(pos[0].upper()) - ord('A')
-                col = int(pos[1]) - 1
-                value = int(value)
-                self.move(row, col, value)
-            except (ValueError, IndexError):
-                print("Invalid format. Use 'A1 5'.")
+            elif move.lower() == "undo":
+                print("Undid Previous Move.")
+                self.undo()
+            elif move.lower() == "redo":
+                print("Redid Previous Move.")
+                self.redo()
+            else:
+                try:
+                    pos, value = move.split()
+                    row = ord(pos[0].upper()) - ord('A')
+                    col = int(pos[1]) - 1
+                    value = int(value)
+                    self.move(row, col, value)
+                except (ValueError, IndexError):
+                    print("Invalid format. Use 'A1 5'.")
         if self.is_complete():
             print("Congratulations! Game Complete.")
